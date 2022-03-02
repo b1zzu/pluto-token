@@ -19,8 +19,8 @@ async function expectRevert(promise: Promise<any>, reason?: string) {
  */
 async function deployPlutoToken(): Promise<Contract> {
   const PlutoToken = await ethers.getContractFactory("PlutoToken");
-  // create a test token with an interval of only 4 seconds
-  const token = await PlutoToken.deploy(plt(8888), plt(8), 4);
+  // create a test token with a cap of 15 tokens, a max token x account of 8 and an interval between mints of 4 seconds
+  const token = await PlutoToken.deploy(plt(15), plt(8), 4);
   await token.deployed();
   return token;
 }
@@ -41,7 +41,7 @@ describe("PlutoToken", () => {
   it("has cap", async () => {
     const token = await deployPlutoToken();
     expect(await token.cap()).to.equal(
-      ethers.BigNumber.from("8888000000000000000000")
+      ethers.BigNumber.from("15000000000000000000")
     );
   });
 
@@ -123,5 +123,18 @@ describe("PlutoToken", () => {
     );
 
     expect(await token1.balance()).to.equal(plt(5));
+  });
+
+  it("can not mint more than the cap", async () => {
+    const [, addr1, addr2] = await ethers.getSigners();
+    const token = await deployPlutoToken();
+
+    const token1 = token.connect(addr1);
+
+    // wait for the request and for it to be mint
+    await await token1.mint(plt(8));
+
+    const token2 = token.connect(addr2);
+    await expectRevert(token2.mint(plt(8)), "ERC20Capped: cap exceeded");
   });
 });

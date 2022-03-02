@@ -1,46 +1,47 @@
-# Advanced Sample Hardhat Project
+# PlutoToken
 
-This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
+PlutoToken is a ER20 token with the following additional conditions:
 
-The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
+1. The max supply of the token is 8888
+2. Any address can mint this token, however:
+   a. Each address can only mint 8 tokens maximum
+   b. Each address can only mint once every 24 hours
+3. Bonus points: Only 888 tokens can be minted every year.
 
-Try running some of the following tasks:
+This porject is based on [hardhat](https://hardhat.org/) to test and deploy the PlutoToken locally, on testnet or on the mainnet.
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
+## Deploy the token locally
+
+Start a local node with hardhat:
+
+```
 npx hardhat node
-npx hardhat help
-REPORT_GAS=true npx hardhat test
-npx hardhat coverage
-npx hardhat run scripts/deploy.ts
-TS_NODE_FILES=true npx ts-node scripts/deploy.ts
-npx eslint '**/*.{js,ts}'
-npx eslint '**/*.{js,ts}' --fix
-npx prettier '**/*.{json,sol,md}' --check
-npx prettier '**/*.{json,sol,md}' --write
-npx solhint 'contracts/**/*.sol'
-npx solhint 'contracts/**/*.sol' --fix
 ```
 
-# Etherscan verification
+After starting the local network JSON-RPC endpoint is `http://127.0.0.1:8545/` and can be added to wallets like MetaMask.
 
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
+Hardhat will also create 20 accounts with well known private-keys that will be preloaded with 10000 ETH each that can be used for paying the gas fee on the network.
 
-In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
+After starting the local node the PlutoToken can be deployed on the local net with this command:
 
-```shell
-hardhat run --network ropsten scripts/deploy.ts
+```
+npx hardhat run scripts/deploy.ts --network localhost
 ```
 
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
+Afte building and deploying the PlutoToken contract it will print the token address which can be used to import the token to wallets like MetaMask.
 
-```shell
-npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
+## Mint tokens
+
+To semplify the action of minting token on the local net the hardhat mint script can be used like this:
+
+```
+npx hardhat mint --contract CONTRACT_ADDRESS --account ACCOUNT_ADDRESS AMOUNT
 ```
 
-# Performance optimizations
+Where the `CONTRACT_ADDRESS` is the address printed by hardhat after deploying the contract, the `ACCOUNT_ADDRESS` is the private-key of the account to which to add the tokens, while `AMOUNT` is the number of PlutoToken to mint.
 
-For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
+You can than check the account balance using the following command:
+
+````
+npx hardhat balance --contract CONTRACT_ADDRESS --account ACCOUNT_ADDRESS```
+````

@@ -13,6 +13,11 @@ contract PlutoToken is ERC20Capped {
     // The mite amounts of each address
     mapping(address => uint256) private _mintAmounts;
 
+    /**
+     * @param cap_ The max amount of tokens that can be issued
+     * @param maxMint_ The maximum amount ot tokens that can be mint by an account
+     * @param minMintInterval_ The miminimum seconds that an account have to wait before it can mint again
+     */
     constructor(
         uint256 cap_,
         uint256 maxMint_,
