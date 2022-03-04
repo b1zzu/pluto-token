@@ -5,9 +5,15 @@ async function main() {
   // Retrieve and deploy the PlutToken contract
   const PlutoToken = await ethers.getContractFactory("PlutoToken");
   const plutoToken = await PlutoToken.deploy(
+    // Token capacity
     BigNumber.from(8888).mul(BigNumber.from(10).pow(18)),
-    ethers.BigNumber.from(8).mul(ethers.BigNumber.from(10).pow(18)),
-    24 * 60 * 60
+    // Max mint per address
+    BigNumber.from(8).mul(BigNumber.from(10).pow(18)),
+    // Mint timeout per address
+    24 * 60 * 60,
+    // Max mint in a year
+    BigNumber.from(888).mul(BigNumber.from(10).pow(18)),
+    365 * 24 * 60 * 60
   );
 
   await plutoToken.deployed();
