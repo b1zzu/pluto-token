@@ -12,7 +12,7 @@ contract PlutoToken is ERC20Capped {
 
     // The last time each address has mint tokens
     mapping(address => uint256) private _lastMints;
-    // The mite amounts of each address
+    // The mint amounts of each address
     mapping(address => uint256) private _mintAmounts;
     // The current mint period that is reset every time the
     // _currentPeriod + _mintPeriod  is smaller than now
