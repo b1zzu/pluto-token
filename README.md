@@ -10,6 +10,16 @@ PlutoToken is an ER20 token with the following additional conditions:
 
 This project is based on [hardhat](https://hardhat.org/) to test and deploy the PlutoToken locally, on testnet, or on the mainnet.
 
+## Prerequisites
+
+- Node.js >= 12
+
+## Setup
+
+```
+npm install
+```
+
 ## Deploy the token locally
 
 Start a local node with hardhat:
@@ -22,7 +32,7 @@ After starting the local network JSON-RPC endpoint is `http://127.0.0.1:8545/` a
 
 Hardhat will also create 20 accounts with well-known private keys that will be preloaded with 10000 ETH each that can be used for paying the gas fee on the network.
 
-After starting the local node the PlutoToken can be deployed on the local net with this command:
+After starting the local node, the PlutoToken can be deployed on the local net with this command:
 
 ```
 npx hardhat run scripts/deploy.ts --network localhost
@@ -43,5 +53,13 @@ Where the `CONTRACT_ADDRESS` is the address printed by hardhat after deploying t
 You can then check the account balance using the following command:
 
 ````
-npx hardhat balance --contract CONTRACT_ADDRESS --account ACCOUNT_ADDRESS```
+npx hardhat balance --contract CONTRACT_ADDRESS --account ACCOUNT_ADDRESS
 ````
+
+## Run all the tests
+
+The tests are located under the `test/` directory and can e run from the hardhat cmd-line like this:
+
+```
+npx hardhat test
+```
